@@ -9,7 +9,7 @@ const authentication = function (req, res, next) {
             return res.status(400).send({ status: false, msg: "Please pass Token for authentication" })
         }
 
-        const a = token && token.split(" ")[1]
+        const a = token && token.split(" ")[1]   
 
         let decodedToken = jwt.verify(a, "group11",{ignoreExpiration:true})
         
