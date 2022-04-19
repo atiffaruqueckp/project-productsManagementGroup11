@@ -4,16 +4,13 @@ const validator = require("../validator/validator")
 const authentication = function (req, res, next) {
     try {
         let token = req.headers["authorization"]
-       // console.log(token)
         if (!token) {
             return res.status(400).send({ status: false, msg: "Please pass Token for authentication" })
         }
 
-        const a = token && token.split(" ")[1]   
+        const a = token && token.split(" ")[1]
 
-        let decodedToken = jwt.verify(a, "group11",{ignoreExpiration:true})
-        
-
+        let decodedToken = jwt.verify(a, "group11")
         let expire = decodedToken.exp
         let iat = Math.floor(Date.now() / 1000)
         if (expire < iat) {
@@ -29,6 +26,7 @@ const authentication = function (req, res, next) {
 
     }
     catch (error) {
+        console.log(error)
         return res.status(500).send({ status: false, msg: error.message })
     }
 }
@@ -60,3 +58,4 @@ const authByUserId = function (req, res, next) {
 
 module.exports.authentication = authentication
 module.exports.authByUserId = authByUserId
+
