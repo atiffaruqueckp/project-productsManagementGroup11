@@ -38,7 +38,7 @@ const createOrder = async function (req, res) {
         }
 
         if (items.length === 0) {
-            return res.status(400).send({ status: false, msg: 'items cant be empty' })
+            return res.status(400).send({ status: false, msg: 'items can not  be empty' })
         }
         if (!validator.isValid(items)) {
             return res.status(400).send({ status: false, message: 'items is required in the request body' })
@@ -123,7 +123,7 @@ const createOrder = async function (req, res) {
 //     }
 
 //     const {productId,quantity} = items[0]
-    
+
 //     const product = await productModel.findOne({_id:productId,isDeleted:false})
 //     if(!product){
 //         return res.status(404).send({status: false,msg:"No such Product Found"})
@@ -140,11 +140,11 @@ const createOrder = async function (req, res) {
 
 //     }
 
-    
+
 //     const createProduct = await orderModel.create(final)
 //     return res.status(201).send({ status: true, msg: 'sucesfully created order', data: createProduct })
-     
-     
+
+
 // }
 //     }
 //     catch(error){
@@ -153,8 +153,8 @@ const createOrder = async function (req, res) {
 //     }
 // }
 
-const updateOrder =async function(req,res){
-    try{
+const updateOrder = async function (req, res) {
+    try {
         let requestBody = req.body;
         const userId = req.params.userId
 
@@ -171,26 +171,26 @@ const updateOrder =async function(req,res){
             return res.status(400).send({ status: false, message: `${orderId} is not a valid user id` })
         }
         const checkOrder = await orderModel.findOne({ _id: orderId, isDeleted: false })
-        if(!checkOrder){
+        if (!checkOrder) {
             return res.status(404).send({ status: false, message: 'No Such Data Found ' })
         }
         if (!(checkOrder.userId == userId)) {
             return res.status(400).send({ status: false, message: 'order not belongs to the user ' })
-        } 
+        }
         if (!(checkOrder.cancellable === true)) {
             return res.status(400).send({ status: false, message: 'order didnt have the cancellable policy ' })
         }
-        if(checkOrder.status === "completed"){
-            return res.status(400).send({status : false,message:"order is already delivered"})
+        if (checkOrder.status === "completed") {
+            return res.status(400).send({ status: false, message: "order is already delivered" })
         }
         let updateOrder = await orderModel.findOneAndUpdate({ _id: orderId }, { status: "canceled" }, { new: true })
-       return res.status(200).send({ status: true, msg: 'succesfully updated', data: updateOrder })
+        return res.status(200).send({ status: true, msg: 'succesfully updated', data: updateOrder })
 
     }
-    catch(error){
+    catch (error) {
         console.log(error)
-        return res.status(500).send({status:false,msg:error.message})
+        return res.status(500).send({ status: false, msg: error.message })
     }
 }
 
-module.exports = {createOrder,updateOrder}
+module.exports = { createOrder, updateOrder }

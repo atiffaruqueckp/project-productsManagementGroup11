@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose")  //mongoose model is a wrapper on the mongoose schema.
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({  //mongoose schema defines the structure of the documents, values,validators.
 
     fname: {
         type: String,
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
         match: /^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/,
-        trim:true
+        trim: true
     },
     profileImage: {
         type: String,
@@ -28,13 +28,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
         match: /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/,
-        trim:true
+        trim: true
     },
     password: {
         type: String,
         required: true,
-        trim:true,
-        
+        trim: true,
+
     }, // encrypted password
     address: {
         shipping: {

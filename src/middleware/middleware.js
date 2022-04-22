@@ -1,15 +1,22 @@
-const jwt = require("jsonwebtoken")
+// jwt ia a securing web application and standard way for two parties to communicate.
+
+const jwt = require("jsonwebtoken")       // it mainly used for authentication for users and providers.
 const validator = require("../validator/validator")
 
-const authentication = function (req, res, next) {
+ //3 callbacks ,it will run or execute the code after all  middleware function is finished.
+
+const authentication = function (req, res, next){
     try {
-        let token = req.headers["authorization"]
+        //headers cary information for req., res. body. in key value form.
+        let token = req.headers["authorization"] 
         if (!token) {
             return res.status(400).send({ status: false, msg: "Please pass Token for authentication" })
         }
+//headers cary information for req., res. body. in key value form.
 
-        const a = token && token.split(" ")[1]
-
+        const a = token && token.split(" ")[1] 
+        
+ // verify a token one is token string value and second one is secret key for matching token is valid or not.
         let decodedToken = jwt.verify(a, "group11")
         let expire = decodedToken.exp
         let iat = Math.floor(Date.now() / 1000)

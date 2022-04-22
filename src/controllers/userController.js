@@ -190,7 +190,7 @@ const getProfile = async function (req, res) {
     try {
         let userId = req.params.userId
 
-        let findProfile = await userModel.findOne({ _id:userId })
+        let findProfile = await userModel.findOne({ _id: userId })
         if (!findProfile) {
             return res.status(404).send({ status: false, msg: "UserId Not Found" })
         }
@@ -220,8 +220,8 @@ const updateProfile = async (req, res) => {
 
 
         if (!validator.isValidReqBody(data)) {
-            if(!(validator.isValidReqBody(req.files)))
-            return res.status(400).send({ status: false, msg: "Please enter Data to be updated" })
+            if (!(validator.isValidReqBody(req.files)))
+                return res.status(400).send({ status: false, msg: "Please enter Data to be updated" })
         }
 
         const { fname, lname, email, phone, address, password } = data
@@ -264,8 +264,8 @@ const updateProfile = async (req, res) => {
             if (files && files.length > 0) {
                 var uploadedFileURL = await aws.uploadFile(files[0])
 
-            // } else {
-            //     return res.status(400).send({ msg: "No file found" })
+                // } else {
+                //     return res.status(400).send({ msg: "No file found" })
             }
         }
 

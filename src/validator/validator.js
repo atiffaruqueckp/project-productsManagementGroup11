@@ -34,7 +34,7 @@ const isINR = (currencyId) => {
 }
 
 const isRs = (currencyFormat) => {
-    return ["Rs"].indexOf(currencyFormat) !== -1
+    return ["₹"].indexOf(currencyFormat) !== -1
 
 }
 

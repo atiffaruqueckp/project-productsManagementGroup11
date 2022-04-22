@@ -48,7 +48,7 @@ const products = async (req, res) => {
         }
 
         if (!validator.isRs(currencyFormat)) {
-            return res.status(400).send({ status: false, msg: "Currency Format must be Rs" })
+            return res.status(400).send({ status: false, msg: "Currency Format must be ₹" })
         }
 
         if (!validator.isValid(availableSizes)) {
@@ -199,15 +199,15 @@ const updateProduct = async function (req, res) {
         if (!isValidReqBody(data)) {
             return res.status(400).send({ status: false, msg: "Please enter Data to be updated" })
         }
-        if(data.availableSizes){
+        if (data.availableSizes) {
 
-        if (!validator.isValidSizes(data.availableSizes)) {
-            return res.status(400).send({ status: false, msg: "Available Sizes should be from ['S', 'XS', 'M', 'X', 'L', 'XXL', 'XL']" })
+            if (!validator.isValidSizes(data.availableSizes)) {
+                return res.status(400).send({ status: false, msg: "Available Sizes should be from ['S', 'XS', 'M', 'X', 'L', 'XXL', 'XL']" })
+            }
         }
-    }
 
-        const duplicateTitle =await productModel.findOne({title:data.title})
-        if(duplicateTitle) return res.status(400).send({status:false, msg:"Title already Used"})
+        const duplicateTitle = await productModel.findOne({ title: data.title })
+        if (duplicateTitle) return res.status(400).send({ status: false, msg: "Title already Used" })
 
         let checkProduct = await productModel.findOne({ _id: productId, isDeleted: true })
         if (checkProduct) {

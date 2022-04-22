@@ -3,7 +3,7 @@ const userModel = require("../models/userModel")
 const productModel = require("../models/productModel")
 const validator = require("../validator/validator")
 const middleware = require("../middleware/middleware")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken")   //it mainly used for authentication for users and providers.
 
 
 const createCart = async function (req, res) {
@@ -44,31 +44,31 @@ const createCart = async function (req, res) {
         let productId = items.productId
 
         let findCart = await cartModel.findOne({ userId: id })
-            if (findCart) {
-                let findProduct = await productModel.findOne({ productId }).select({ price: 1, _id: 0 })
-                if (!findProduct) {
-                    return res.status(404).send({ status: false, msg: "Product not found" })
-                }
-                var getPrice = findProduct.price;
+        if (findCart) {
+            let findProduct = await productModel.findOne({ productId }).select({ price: 1, _id: 0 })
+            if (!findProduct) {
+                return res.status(404).send({ status: false, msg: "Product not found" })
+            }
+            var getPrice = findProduct.price;
 
-                for (i = 0; i < items.length; i++) {
-                    if (items[i].quantity > 0)
-                        var storePrice = (items[i].quantity * getPrice)
-                }
-
-                let cartDetails = {
-                    userId: userId,
-                    items: items,
-                    totalPrice: storePrice,
-                    totalItems: items.length
-                }
-                let addCart = await cartModel.findOneAndUpdate({ userId }, { $set: cartDetails }, { new: true })
-                return res.status(201).send({ status: true, msg: "Cart Added Successfully", data: addCart })
+            for (i = 0; i < items.length; i++) {
+                if (items[i].quantity > 0)
+                    var storePrice = (items[i].quantity * getPrice)
             }
 
-        
+            let cartDetails = {
+                userId: userId,
+                items: items,
+                totalPrice: storePrice,
+                totalItems: items.length
+            }
+            let addCart = await cartModel.findOneAndUpdate({ userId }, { $set: cartDetails }, { new: true })
+            return res.status(201).send({ status: true, msg: "Cart Added Successfully", data: addCart })
+        }
+
+
         if (!findCart) {
-    
+
             let findProduct = await productModel.findOne({ productId }).select({ price: 1, _id: 0 })
             if (!findProduct) {
                 return res.status(404).send({ status: false, msg: "Product not found" })
@@ -276,7 +276,7 @@ const updateCart = async function (req, res) {
             if (items[i].productId == productId) {
                 let totelProductprice = items[i].quantity * getPrice
 
-                if (removeProduct === 0) {
+                if (removeProduct === 0) {   //pull= this method used to remove an element from collection by given key and return the pulled element.
                     const updateProductItem = await cartModel.findOneAndUpdate({ userId: userId }, { $pull: { items: { productId: productId } }, totalPrice: searchCart.totalPrice - totelProductprice, totalItems: searchCart.totalItems - 1 }, { new: true })
                     return res.status(200).send({ status: true, msg: 'sucessfully removed product', data: updateProductItem })
 
@@ -305,4 +305,4 @@ const updateCart = async function (req, res) {
 
 
 
-module.exports = { createCart, updateCart, getCart, deleteCart  }
+module.exports = { createCart, updateCart, getCart, deleteCart }
